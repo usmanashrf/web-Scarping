@@ -1,0 +1,28 @@
+from bs4 import BeautifulSoup
+from csv import writer
+from urllib.request import urlopen
+import re
+import requests
+
+response = requests.get('http://www.pakpositions.com/industry/accounts-tax-cs-audit/5')
+soup = BeautifulSoup(response.text, 'html.parser')
+
+posts = soup.find_all(class_='col-md-12')
+with open(r"C:\\Users\\haieer\\Desktop\5thPakposition.txt", "w+")as input:
+ for post in posts:
+    link = post.find('a',{'class':'jobtitle'}).get('href')
+    print(link)
+    html = urlopen(link) 
+    obj = BeautifulSoup(html, 'html.parser')
+    info = obj.find(class_='jobname')
+    cont = obj.find(class_='reqlist')
+    skill = obj.find(class_='skillBox')
+    detail = obj.find(class_='normal-details')
+    input.write('=>')
+    input.writelines(info.get_text()) 
+    input.writelines(cont.get_text())
+   # input.writelines(skill.get_text())
+    input.writelines(detail.get_text())
+    input.write('\n')
+    input.write('\n')
+    
